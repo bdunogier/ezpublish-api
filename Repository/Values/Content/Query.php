@@ -140,10 +140,25 @@ class Query extends ValueObject
 
     public function __toString()
     {
-        if ( $this->filter === null )
+        return implode(
+            ', ',
+            array( (string)$this->filter, $this->sortClauseToString() )
+        );
+    }
+
+    private function sortClauseToString()
+    {
+        if ( count( $this->sortClauses ) == 0)
         {
             return '';
         }
-        return (string)$this->filter;
+
+        $sortClauseStringArray = array();
+        foreach ( $this->sortClauses as $sortClause )
+        {
+            $sortClauseStringArray[] = (string)$sortClause;
+        }
+
+        return "SORT BY " . implode( ', ', $sortClauseStringArray );
     }
 }
